@@ -2,6 +2,34 @@
 (function () {
   'use strict';
 
+  /* Esqueleto de carregamento (celular e tablet). O <head> liga a classe "skel"; aqui ele só aparece
+     se a página demorar mais de 400 ms e fica pelo menos 350 ms, para não piscar em conexão boa.
+     Para ver o esqueleto na revisão, abra a página com ?esqueleto no endereço (ele fica 4 s). */
+  var root = document.documentElement;
+  if (root.classList.contains('skel')) {
+    var forced = location.search.indexOf('esqueleto') !== -1;
+    var shownAt = 0, finished = false;
+    var showTimer = setTimeout(function () { shownAt = Date.now(); root.classList.add('skel-on'); }, forced ? 0 : 400);
+    function endSkeleton() { root.classList.remove('skel', 'skel-on', 'skel-off'); }
+    function leaveSkeleton() {
+      if (finished) return;
+      finished = true;
+      clearTimeout(showTimer);
+      if (!shownAt) { endSkeleton(); return; }
+      setTimeout(function () {
+        root.classList.add('skel-off');
+        setTimeout(endSkeleton, 320);
+      }, Math.max(0, 350 - (Date.now() - shownAt)));
+    }
+    var loaded = new Promise(function (ok) {
+      if (document.readyState === 'complete') ok(); else window.addEventListener('load', ok, { once: true });
+    });
+    var fontsReady = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
+    Promise.all([loaded, fontsReady]).then(function () { if (forced) setTimeout(leaveSkeleton, 4000); else leaveSkeleton(); });
+    setTimeout(leaveSkeleton, 8000); // segurança: nunca prende a tela
+  }
+  window.addEventListener('pageshow', function (e) { if (e.persisted) root.classList.remove('skel', 'skel-on', 'skel-off'); });
+
   // Número do WhatsApp (DDI + DDD + número, só dígitos). Trocar aqui quando houver o real.
   var WHATSAPP = '5549900000000';
 
@@ -185,6 +213,47 @@
       window.open(waLink(texto), '_blank', 'noopener');
     });
   }
+
+  /* Toque: o efeito de "apertar" e a ondulação aparecem mesmo em toques muito rápidos (o :active sozinho some em ~80 ms).
+     Só para dedo e caneta; com o mouse valem apenas os estilos de :hover e :active. */
+  var PRESSABLE = '.btn, .chips a, .chips button, .gallery__item, .nav__toggle, .nav__links a, .lightbox__btn, .wa-float, .link, .brand, .footer li a, .infos a, .footer__legal a';
+  document.addEventListener('touchstart', function () {}, { passive: true }); // iOS: liga o :active
+  var RIPPLE = '.btn, .chips a, .chips button, .nav__toggle, .wa-float, .lightbox__btn';
+  function ripple(el, x, y) { // círculo que sai do ponto do dedo (o CSS anima e recorta na forma do botão)
+    var r = el.getBoundingClientRect();
+    var d = Math.max(r.width, r.height) * 2.2;
+    var s = document.createElement('i');
+    s.className = 'ripple';
+    s.setAttribute('aria-hidden', 'true');
+    s.style.width = s.style.height = d + 'px';
+    s.style.left = (x - r.left - d / 2) + 'px';
+    s.style.top = (y - r.top - d / 2) + 'px';
+    el.appendChild(s);
+    setTimeout(function () { s.remove(); }, 650);
+  }
+  document.addEventListener('pointerdown', function (e) {
+    if (e.pointerType === 'mouse') return;
+    var el = e.target.closest ? e.target.closest(PRESSABLE) : null;
+    if (!el) return;
+    var shownSince = 0;
+    var timer = setTimeout(show, 45); // pequena espera: se o dedo começar a rolar a página, não aperta
+    function show() {
+      timer = null; shownSince = Date.now(); el.classList.add('is-pressed');
+      if (el.matches(RIPPLE)) ripple(el, e.clientX, e.clientY);
+    }
+    function hide() { el.classList.remove('is-pressed'); }
+    function release(ev) {
+      el.removeEventListener('pointerup', release);
+      el.removeEventListener('pointercancel', release);
+      el.removeEventListener('pointerleave', release);
+      if (ev.type !== 'pointerup') { clearTimeout(timer); hide(); return; } // rolagem ou dedo arrastado para fora
+      if (timer) { clearTimeout(timer); show(); } // toque rápido: mostra agora
+      setTimeout(hide, Math.max(0, 150 - (Date.now() - shownSince)));
+    }
+    el.addEventListener('pointerup', release);
+    el.addEventListener('pointercancel', release);
+    el.addEventListener('pointerleave', release);
+  }, { passive: true });
 
   /* Ano no rodapé */
   document.querySelectorAll('[data-ano]').forEach(function (el) { el.textContent = new Date().getFullYear(); });

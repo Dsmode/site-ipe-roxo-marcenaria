@@ -17,9 +17,22 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
+  <script>/* esqueleto de carregamento: só celular e tablet */if(matchMedia("(max-width:1023px)").matches){var h=document.documentElement;h.classList.add("skel");setTimeout(function(){h.classList.remove("skel")},10000)}</script>
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body data-page="contato">
+  <div class="skeleton" aria-hidden="true">
+    <div class="sk-bar"><span class="sk-brand"><span class="sk sk-logo"></span><span class="sk-stack" style="gap:6px"><span class="sk sk-line" style="width:86px"></span><span class="sk sk-line" style="width:58px"></span></span></span><span class="sk sk-circle"></span></div>
+    <div class="sk-page">
+      <div class="sk-stack sk-stack--lg"><span class="sk sk-title" style="width:70%"></span><span class="sk sk-title" style="width:40%"></span></div>
+      <div class="sk-stack"><span class="sk sk-line" style="width:100%"></span><span class="sk sk-line" style="width:80%"></span></div>
+      <div class="sk-stack sk-stack--lg"><span class="sk sk-title" style="width:86%"></span><span class="sk sk-line" style="width:96%"></span></div>
+      <div class="sk-stack sk-stack--lg"><div class="sk-stack"><span class="sk sk-line" style="width:34%"></span><span class="sk sk-input"></span></div><div class="sk-stack"><span class="sk sk-line" style="width:28%"></span><span class="sk sk-input"></span></div><div class="sk-stack"><span class="sk sk-line" style="width:40%"></span><span class="sk sk-input"></span></div><div class="sk-stack"><span class="sk sk-line" style="width:30%"></span><span class="sk sk-area"></span></div></div>
+      <span class="sk sk-btn"></span>
+      <span class="sk sk-photo"></span>
+    </div>
+    <span class="sk sk-fab"></span>
+  </div>
   <a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
 
   <header class="nav">
@@ -28,7 +41,7 @@
         <img src="assets/logo/logo-marca.png" alt="" width="52" height="48">
         <span class="brand__txt" translate="no"><strong>Ipê Roxo</strong><span>Marcenaria</span></span>
       </a>
-      <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="menu" aria-label="Abrir menu"><i data-icon="menu"></i></button>
+      <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="menu" aria-label="Abrir menu"><span class="burger" aria-hidden="true"><span></span><span></span><span></span></span></button>
       <nav class="nav__links" id="menu" aria-label="Principal">
         <a href="index.html">Início</a>
         <a href="servicos.html">Serviços</a>

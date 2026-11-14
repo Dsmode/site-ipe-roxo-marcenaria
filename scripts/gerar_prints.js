@@ -1,5 +1,5 @@
 // Gera os prints usados no README (docs/screenshots). Requer o servidor local na porta 8080:
-//   python -m http.server 8080
+//   python scripts/servidor_local.py
 // e o Playwright global (@playwright/cli). Depois converte para JPG com scripts/converter_prints.py.
 const path = require('path');
 const fs = require('fs');
@@ -21,6 +21,8 @@ async function preparar(page, url) {
     await Promise.all([...document.images].map(i => (i.complete ? 0 : new Promise(r => { i.onload = i.onerror = r; }))));
     await document.fonts.ready;
   });
+  // no celular e no tablet, espera o esqueleto de carregamento sair antes de capturar
+  await page.waitForFunction(() => !document.documentElement.classList.contains('skel'), null, { timeout: 15000 });
   await page.waitForTimeout(500);
 }
 
@@ -41,6 +43,14 @@ async function preparar(page, url) {
     const page = await m.newPage();
     await preparar(page, BASE + nome + '.html');
     await page.screenshot({ path: path.join(OUT, `${nome}-mobile.png`) });
+    await page.close();
+  }
+  // esqueleto de carregamento: a página aberta com ?esqueleto segura o esqueleto por alguns segundos
+  for (const nome of MOBILE) {
+    const page = await m.newPage();
+    await page.goto(BASE + nome + '.html?esqueleto', { waitUntil: 'domcontentloaded' });
+    await page.waitForTimeout(900);
+    await page.screenshot({ path: path.join(OUT, `${nome}-esqueleto.png`) });
     await page.close();
   }
   await m.close();
