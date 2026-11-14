@@ -2,6 +2,8 @@
 Thumbs.db
 node_modules/
 _publicar/
+docs/PUBLICAR.md
+scripts/preparar_publicacao.py
 scripts/_shots/
 scripts/_prints/
 
