@@ -6,7 +6,8 @@ const OUT = path.join(__dirname, '_shots');
 fs.mkdirSync(OUT, { recursive: true });
 
 const BASE = 'http://127.0.0.1:8080/';
-const PAGINAS = ['index.html', 'servicos.html', 'galeria.html', 'sobre.html', 'contato.html', 'creditos.html', '404.html'];
+const PAGINAS = ['index.html', 'servicos.html', 'galeria.html', 'sobre.html', 'contato.html', 'creditos.html', '404.html', 'privacidade.html', 'termos.html', 'obrigado.html'];
+const CONSENT = () => localStorage.setItem('ipe-consentimento', JSON.stringify({ versao: 1, mapa: false, data: new Date().toISOString() }));
 const LARGURAS = [[390, 844], [768, 1024], [1024, 768], [1440, 900]];
 const falhas = [];
 const resumo = [];
@@ -15,6 +16,7 @@ const resumo = [];
   const browser = await chromium.launch({ channel: 'chrome', headless: true });
   for (const [w, h] of LARGURAS) {
     const ctx = await browser.newContext({ viewport: { width: w, height: h }, deviceScaleFactor: 1 });
+    await ctx.addInitScript(CONSENT);
     for (const pg of PAGINAS) {
       const page = await ctx.newPage();
       const erros = [];
@@ -34,7 +36,7 @@ const resumo = [];
         const quebradas = [...document.images].filter(i => i.naturalWidth === 0).map(i => i.getAttribute('src'));
         const h1 = document.querySelectorAll('h1').length;
         const atual = [...document.querySelectorAll('.nav__links a[aria-current]')].map(a => a.textContent);
-        const pequenos = [...document.querySelectorAll('a, button')].filter(e => { const r = e.getBoundingClientRect(); const cs = getComputedStyle(e); return r.width > 0 && r.height > 0 && cs.visibility !== 'hidden' && (r.height < 24 || r.width < 24) && !e.closest('.sr-only') && !e.classList.contains('skip-link'); }).map(e => (e.textContent || e.getAttribute('aria-label') || '').trim().slice(0, 25) + ' ' + Math.round(e.getBoundingClientRect().width) + 'x' + Math.round(e.getBoundingClientRect().height));
+        const pequenos = [...document.querySelectorAll('a, button')].filter(e => { const r = e.getBoundingClientRect(); const cs = getComputedStyle(e); return r.width > 0 && r.height > 0 && cs.visibility !== 'hidden' && (r.height < 24 || r.width < 24) && !e.closest('.sr-only') && !e.closest('.legal, .check, .cookie') && !e.classList.contains('skip-link'); }).map(e => (e.textContent || e.getAttribute('aria-label') || '').trim().slice(0, 25) + ' ' + Math.round(e.getBoundingClientRect().width) + 'x' + Math.round(e.getBoundingClientRect().height));
         return { sw, cw, quebradas, h1, atual, pequenos };
       });
       const rotulo = `${w}px ${pg}`;
@@ -55,6 +57,7 @@ const resumo = [];
 
   // --- interações ---
   const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  await ctx.addInitScript(CONSENT);
   let page = await ctx.newPage();
   await page.goto(BASE + 'index.html');
   await page.click('.nav__toggle');
@@ -94,8 +97,41 @@ const resumo = [];
   await page.fill('#nome', 'Teste');
   await page.selectOption('#tipo', 'Guarda-roupa sob medida');
   await page.click('#form-orcamento button[type=submit]');
-  const aberta = await page.evaluate(() => window.__abertos[0] || '');
+  const ea = await page.textContent('#aceite-erro');
+  const focoA = await page.evaluate(() => document.activeElement.id);
+  if (!ea || focoA !== 'aceite') falhas.push('formulário: sem aceite deveria bloquear e focar a caixa');
+  if (await page.evaluate(() => window.__abertos.length)) falhas.push('formulário: abriu o WhatsApp sem o aceite');
+  await page.check('#aceite');
+  await page.evaluate(() => { window.open = (u) => { sessionStorage.setItem('__wa', u); return null; }; });
+  await Promise.all([page.waitForURL('**/obrigado.html', { timeout: 5000 }).catch(() => falhas.push('formulário: não foi para obrigado.html')), page.click('#form-orcamento button[type=submit]')]);
+  const registro = await page.evaluate(() => localStorage.getItem('ipe-aceite'));
+  if (!registro || !registro.includes('data')) falhas.push('formulário: aceite não registrado');
+  const aberta = await page.evaluate(() => sessionStorage.getItem('__wa') || '');
   if (!aberta.includes('wa.me/5549900000000') || !decodeURIComponent(aberta).includes('Guarda-roupa sob medida')) falhas.push('formulário: URL do WhatsApp errada ' + aberta);
+
+  // aviso de cookies: aparece sem escolha guardada, recusar fecha e grava, mapa só com permissão
+  const ctx3 = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+  const pg3 = await ctx3.newPage();
+  await pg3.goto(BASE + 'contato.html');
+  await pg3.waitForTimeout(300);
+  if (!(await pg3.locator('.cookie').count())) falhas.push('cookies: aviso não apareceu');
+  if (await pg3.locator('.map iframe').count()) falhas.push('cookies: mapa carregou antes da permissão');
+  const reqGoogle = [];
+  pg3.on('request', (r) => { if (/google\.com\/maps/.test(r.url())) reqGoogle.push(r.url()); });
+  await pg3.click('.cookie [data-c=nao]');
+  if (await pg3.locator('.cookie').count()) falhas.push('cookies: aviso não fechou ao recusar');
+  await pg3.reload();
+  await pg3.waitForTimeout(300);
+  if (await pg3.locator('.cookie').count() || await pg3.locator('.map iframe').count() || reqGoogle.length) falhas.push('cookies: recusa não foi respeitada');
+  await pg3.click('[data-cookie-prefs]');
+  await pg3.click('.cookie [data-c=sim]');
+  await pg3.waitForSelector('.map iframe', { timeout: 3000 }).catch(() => falhas.push('cookies: mapa não abriu após aceitar'));
+  const guardado = await pg3.evaluate(() => JSON.parse(localStorage.getItem('ipe-consentimento')));
+  if (!guardado || guardado.mapa !== true) falhas.push('cookies: escolha não gravada');
+  await pg3.click('[data-cookie-prefs]');
+  await pg3.click('.cookie [data-c=nao]');
+  if (await pg3.locator('.map iframe').count()) falhas.push('cookies: mapa continuou após revogar');
+  await ctx3.close();
 
   // botão flutuante: compacto no topo, expande ao rolar
   await page.goto(BASE + 'index.html');
@@ -108,6 +144,7 @@ const resumo = [];
 
   // menu marcado ao rolar na Home (desktop, com eventos reais de rolagem)
   const ctx2 = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+  await ctx2.addInitScript(CONSENT);
   page = await ctx2.newPage();
   await page.goto(BASE + 'index.html');
   const marcados = [];

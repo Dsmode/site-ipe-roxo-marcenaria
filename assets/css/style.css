@@ -1,5 +1,11 @@
 /* Ipê Roxo Marcenaria — estilos globais (todas as páginas) */
 
+/* Fontes servidas pelo próprio site (DM Sans e Fraunces, licença SIL OFL). Só o subconjunto latin, que cobre o português. */
+@font-face { font-family: 'DM Sans'; font-style: normal; font-weight: 400; font-display: swap; src: url(../fonts/dmsans-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: 'DM Sans'; font-style: normal; font-weight: 500; font-display: swap; src: url(../fonts/dmsans-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: 'Fraunces'; font-style: italic; font-weight: 400; font-display: swap; src: url(../fonts/fraunces-italic-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: 'Fraunces'; font-style: normal; font-weight: 400; font-display: swap; src: url(../fonts/fraunces-normal-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+
 :root {
   color-scheme: light;
   /* Identidade */
@@ -628,3 +634,53 @@ dialog.lightbox::backdrop { background: rgba(28, 17, 11, .92); }
   .nav__links a:not(.btn):active, .nav__links a:not(.btn).is-pressed { color: var(--nogueira); }
   .nav__links a:not(.btn):active::before, .nav__links a:not(.btn).is-pressed::before { opacity: 1; transition-duration: .07s; }
 }
+
+/* ==========================================================================
+   Privacidade: aviso de cookies, mapa sob permissão, aceite do formulário,
+   páginas de texto (privacidade, termos) e página de obrigado.
+   ========================================================================== */
+.linklike { font: inherit; color: inherit; background: none; border: 0; padding: 0; min-height: 32px; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.linklike:hover { opacity: .8; }
+
+.cookie {
+  position: fixed; z-index: 90; left: max(var(--s5), env(safe-area-inset-left)); bottom: max(var(--s5), env(safe-area-inset-bottom));
+  width: min(460px, calc(100% - 2 * var(--s5))); display: grid; gap: var(--s3); padding: var(--s5);
+  background: var(--creme); color: var(--ink); border: 1px solid var(--linha); border-radius: var(--r-lg);
+  box-shadow: 0 16px 48px rgba(28, 17, 11, .28); animation: cookie-in .4s ease both;
+}
+.cookie h2 { font-size: 1.375rem; letter-spacing: -.01em; }
+.cookie p { font-size: 1rem; color: var(--ink-soft); }
+.cookie a { color: var(--nogueira); text-underline-offset: 3px; }
+.cookie__acoes { display: flex; gap: var(--s3); margin-top: var(--s2); }
+.cookie__acoes .btn { flex: 1; padding: 0 var(--s4); }
+@keyframes cookie-in { from { opacity: 0; transform: translateY(16px); } }
+@media (max-width: 640px) {
+  .cookie { left: var(--s4); right: var(--s4); width: auto; bottom: max(var(--s4), env(safe-area-inset-bottom)); padding: var(--s4); }
+}
+
+.map[data-map]:not(.is-loaded) { aspect-ratio: auto; display: grid; place-items: center; padding: var(--s6) var(--s5); background: var(--creme-2); }
+.map__gate { display: grid; gap: var(--s3); justify-items: center; text-align: center; max-width: 24rem; }
+.map__gate .icon { width: 32px; height: 32px; color: var(--musgo); }
+.map__gate p { font-size: 1rem; color: var(--ink-soft); }
+.map__alt { display: inline-flex; align-items: center; min-height: 32px; color: var(--nogueira); font-size: 1rem; text-underline-offset: 3px; }
+
+.check-row { display: grid; gap: var(--s2); }
+.check { display: flex; gap: var(--s3); align-items: flex-start; font-size: 1rem; line-height: 1.5; cursor: pointer; }
+.check input { flex: none; width: 24px; height: 24px; margin: 0; accent-color: var(--musgo); cursor: pointer; }
+.check a { color: var(--nogueira); text-underline-offset: 3px; }
+.check-row input[aria-invalid="true"] { outline: 2px solid #9A2B1B; outline-offset: 2px; }
+
+.legal { padding-top: 0; }
+.legal .wrap > * { max-width: 46rem; }
+.legal h2 { font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem); margin: var(--s7) 0 var(--s3); }
+.legal h2:first-of-type { margin-top: var(--s6); }
+.legal p, .legal li { font-size: 1.0625rem; color: var(--ink-soft); }
+.legal p + p, .legal p + ul { margin-top: var(--s3); }
+.legal ul { list-style: disc; padding-left: var(--s5); display: grid; gap: var(--s2); margin-top: var(--s3); }
+.legal ul + p { margin-top: var(--s3); }
+.legal a { color: var(--nogueira); text-underline-offset: 3px; }
+.legal code { font-size: .9375rem; background: var(--creme-2); padding: 1px 6px; border-radius: 6px; }
+.notice { padding: var(--s4) var(--s5); background: var(--creme-2); border-left: 4px solid var(--ambar); border-radius: var(--r-sm); color: var(--ink); font-size: 1rem; }
+.thanks { padding-bottom: var(--s10); }
+.thanks .lead { margin-bottom: var(--s4); }
+.thanks .btn-row { margin-top: var(--s5); }

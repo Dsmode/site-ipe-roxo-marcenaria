@@ -6,18 +6,25 @@
   <title>Ipê Roxo Marcenaria: móveis sob medida em Chapecó, SC</title>
   <meta name="description" content="Cozinhas, guarda-roupas e móveis para comércio sob medida em Chapecó e no Oeste catarinense, do projeto à instalação, em madeira de reflorestamento.">
   <meta name="theme-color" content="#F6F0E6">
+  <link rel="canonical" href="https://SEU-SITE.netlify.app/">
   <meta property="og:title" content="Ipê Roxo Marcenaria: móveis sob medida em Chapecó, SC">
   <meta property="og:description" content="Móveis sob medida do projeto à instalação, em madeira de reflorestamento. Cozinha planejada a partir de R$ 2.400 por metro linear.">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="pt_BR">
-  <meta property="og:image" content="share.jpg"><!-- trocar por endereço absoluto (https://seu-site/share.jpg) depois de publicar -->
+  <meta property="og:url" content="https://SEU-SITE.netlify.app/">
+  <meta property="og:image" content="https://SEU-SITE.netlify.app/share.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Marcenaria Ipê Roxo: móveis de madeira sob medida">
+  <meta name="twitter:image" content="https://SEU-SITE.netlify.app/share.jpg">
   <meta name="twitter:card" content="summary_large_image">
   <!-- og:image e canonical entram quando houver foto final do hero e o domínio definitivo -->
-  <link rel="icon" type="image/png" href="assets/logo/favicon.png">
+  <link rel="icon" href="favicon.ico" sizes="48x48">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/logo/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/logo/favicon-16.png">
   <link rel="apple-touch-icon" href="assets/logo/apple-touch-icon.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="preload" href="assets/fonts/dmsans-latin.woff2" as="font" type="font/woff2" crossorigin>
   <script>/* esqueleto de carregamento: só celular e tablet */if(matchMedia("(max-width:1023px)").matches){var h=document.documentElement;h.classList.add("skel");setTimeout(function(){h.classList.remove("skel")},10000)}</script>
   <link rel="stylesheet" href="assets/css/style.css">
   <!-- Dados de exemplo (projeto fictício). Com dados reais, atualizar aqui. -->
@@ -316,6 +323,10 @@
               <label for="mensagem">Detalhes (opcional)</label>
               <textarea id="mensagem" name="mensagem" rows="4"></textarea>
             </div>
+            <div class="check-row">
+              <label class="check" for="aceite"><input id="aceite" name="aceite" type="checkbox" aria-describedby="aceite-erro"><span>Li e concordo com a <a href="privacidade.html" target="_blank" rel="noopener">Política de Privacidade</a> e os <a href="termos.html" target="_blank" rel="noopener">Termos de uso</a>.</span></label>
+              <p class="field__erro" id="aceite-erro" role="alert"></p>
+            </div>
             <div><button class="btn btn--primary" type="submit"><i data-icon="whatsapp"></i>Enviar pelo WhatsApp</button></div>
             <p class="form__hint" id="form-status" role="status">Atendimento de segunda a sexta, 8h às 18h, e sábado, 8h às 12h.</p>
           </form>
@@ -328,9 +339,14 @@
             <li><i data-icon="instagram"></i><div><strong>Instagram</strong><a href="https://www.instagram.com/iperoxo.marcenaria" target="_blank" rel="noopener">@iperoxo.marcenaria</a></div></li>
             <li><i data-icon="clock"></i><div><strong>Horário</strong>Segunda a sexta, 8h às 18h<br>Sábado, 8h às 12h</div></li>
           </ul>
-          <div class="map">
-            <iframe title="Mapa com a localização da Ipê Roxo Marcenaria, na Efapi, em Chapecó" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=Rua+das+Paineiras,+482,+Efapi,+Chapec%C3%B3,+SC&amp;output=embed"></iframe>
-          </div>
+          <div class="map" data-map data-src="https://www.google.com/maps?q=Rua+das+Paineiras,+482,+Efapi,+Chapec%C3%B3,+SC&amp;output=embed">
+              <div class="map__gate">
+                <i data-icon="map-pin"></i>
+                <p>O mapa é do Google e usa cookies e dados do seu navegador. Ele só abre com a sua permissão.</p>
+                <button class="btn btn--secondary" type="button" data-map-load>Mostrar o mapa</button>
+                <a class="map__alt" href="https://www.google.com/maps/search/?api=1&amp;query=Rua+das+Paineiras,+482,+Efapi,+Chapec%C3%B3,+SC" target="_blank" rel="noopener">Abrir no Google Maps<span class="sr-only"> (abre em nova aba)</span></a>
+              </div>
+            </div>
         </div>
       </div>
     </section>
@@ -367,7 +383,7 @@
         <div>
           <h3>Contato</h3>
           <ul>
-            <li>Rua das Paineiras, 482, Efapi<br>Chapecó, SC</li>
+            <li>Rua das Paineiras, 482, Efapi<br>Chapecó, SC<br>CNPJ 00.000.000/0001-00<!-- CNPJ fictício: trocar pelo real --></li>
             <li><a href="#contato" data-wa="Olá! Gostaria de pedir um orçamento.">(49) 90000-0000</a></li>
             <li><a href="mailto:contato@iperoxo.com.br">contato@iperoxo.com.br</a></li>
             <li><a href="https://www.instagram.com/iperoxo.marcenaria" target="_blank" rel="noopener">@iperoxo.marcenaria</a></li>
@@ -376,6 +392,7 @@
       </div>
       <div class="footer__legal">
         <span>© <span data-ano>2026</span> Ipê Roxo Marcenaria. Projeto fictício de portfólio.</span>
+        <span><a href="privacidade.html">Privacidade e cookies</a> · <a href="termos.html">Termos de uso</a> · <button class="linklike" type="button" data-cookie-prefs>Preferências de cookies</button></span>
         <span>Fotografias via <a href="creditos.html">Unsplash</a></span>
       </div>
     </div>

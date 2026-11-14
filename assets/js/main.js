@@ -190,6 +190,83 @@
     window.addEventListener('hashchange', filtroDaUrl);
   }
 
+  /* Privacidade (LGPD). O site não usa analytics nem cookies de publicidade: nada de rastreamento carrega.
+     A única coisa que pede escolha é o mapa do Google. A escolha fica só neste navegador e vale por 12 meses. */
+  var brandLink = document.querySelector('a.brand');
+  var base = brandLink ? brandLink.getAttribute('href').replace(/index\.html$/, '') : ''; // '' ou '/' (a 404 usa caminhos da raiz)
+  var CHAVE_CONSENT = 'ipe-consentimento';
+  function lerConsent() {
+    try {
+      var c = JSON.parse(localStorage.getItem(CHAVE_CONSENT));
+      if (c && c.data && Date.now() - new Date(c.data).getTime() < 365 * 864e5) return c;
+    } catch (err) {}
+    return null;
+  }
+  function gravarConsent(mapa) {
+    try { localStorage.setItem(CHAVE_CONSENT, JSON.stringify({ versao: 1, mapa: !!mapa, data: new Date().toISOString() })); } catch (err) {}
+  }
+
+  var mapaBox = document.querySelector('[data-map]');
+  var mapaGate = mapaBox ? mapaBox.firstElementChild : null;
+  function mostrarMapa() {
+    if (!mapaBox || mapaBox.classList.contains('is-loaded')) return;
+    var f = document.createElement('iframe');
+    f.title = 'Mapa com a localização da Ipê Roxo Marcenaria, na Efapi, em Chapecó';
+    f.loading = 'lazy';
+    f.referrerPolicy = 'no-referrer-when-downgrade';
+    f.src = mapaBox.getAttribute('data-src');
+    mapaBox.replaceChildren(f);
+    mapaBox.classList.add('is-loaded');
+  }
+  function esconderMapa() {
+    if (!mapaBox || !mapaBox.classList.contains('is-loaded')) return;
+    mapaBox.classList.remove('is-loaded');
+    mapaBox.replaceChildren(mapaGate);
+  }
+
+  var banner = null;
+  function fecharBanner(volta) {
+    if (banner) { banner.remove(); banner = null; }
+    if (volta && volta.focus) volta.focus();
+  }
+  function abrirBanner(origem) {
+    if (banner) return;
+    banner = document.createElement('div');
+    banner.className = 'cookie';
+    banner.setAttribute('role', 'dialog');
+    banner.setAttribute('aria-modal', 'false');
+    banner.setAttribute('aria-labelledby', 'cookie-t');
+    banner.setAttribute('aria-describedby', 'cookie-d');
+    banner.innerHTML =
+      '<h2 id="cookie-t">Sua privacidade</h2>' +
+      '<p id="cookie-d">Este site não usa cookies de publicidade nem de análise. O mapa do Google, que só aparece com a sua permissão, usa cookies do Google. ' +
+      '<a href="' + base + 'privacidade.html#cookies">Saiba mais</a>.</p>' +
+      '<div class="cookie__acoes">' +
+      '<button class="btn btn--secondary" type="button" data-c="nao">Recusar</button>' +
+      '<button class="btn btn--primary" type="button" data-c="sim">Aceitar</button>' +
+      '</div>';
+    banner.addEventListener('click', function (e) {
+      var b = e.target.closest('[data-c]');
+      if (!b) return;
+      var sim = b.getAttribute('data-c') === 'sim';
+      gravarConsent(sim);
+      if (sim) mostrarMapa(); else esconderMapa();
+      fecharBanner(origem);
+    });
+    banner.addEventListener('keydown', function (e) { if (e.key === 'Escape' && origem) fecharBanner(origem); });
+    document.body.appendChild(banner);
+    if (origem) banner.querySelector('[data-c]').focus();
+  }
+  document.addEventListener('click', function (e) {
+    var t = e.target.closest ? e.target.closest('[data-map-load], [data-cookie-prefs]') : null;
+    if (!t) return;
+    if (t.hasAttribute('data-map-load')) mostrarMapa(); // só desta vez; a escolha guardada é a do aviso
+    else abrirBanner(t);
+  });
+  var consent = lerConsent();
+  if (consent && consent.mapa) mostrarMapa();
+  if (!consent) abrirBanner(null);
+
   /* Formulário: monta a mensagem e abre o WhatsApp */
   var form = document.getElementById('form-orcamento');
   if (form) {
@@ -198,19 +275,27 @@
       if (texto) { campo.setAttribute('aria-invalid', 'true'); el.textContent = texto; }
       else { campo.removeAttribute('aria-invalid'); el.textContent = ''; }
     }
+    var chk = form.elements.aceite;
+    if (chk) chk.addEventListener('change', function () { if (chk.checked) erro(chk, ''); });
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       var nome = form.elements.nome, tipo = form.elements.tipo, msg = form.elements.mensagem;
       var primeiro = null;
-      erro(nome, ''); erro(tipo, '');
+      var aceite = form.elements.aceite;
+      erro(nome, ''); erro(tipo, ''); if (aceite) erro(aceite, '');
       if (!nome.value.trim()) { erro(nome, 'Escreva o seu nome.'); primeiro = primeiro || nome; }
       if (!tipo.value) { erro(tipo, 'Escolha o tipo de móvel.'); primeiro = primeiro || tipo; }
+      if (aceite && !aceite.checked) { erro(aceite, 'Marque a caixa para concordar e enviar.'); primeiro = primeiro || aceite; }
       var status = document.getElementById('form-status');
       if (primeiro) { primeiro.focus(); status.textContent = 'Revise os campos marcados.'; return; }
       var texto = 'Olá! Meu nome é ' + nome.value.trim() + '. Gostaria de um orçamento de: ' + tipo.value + '.';
       if (msg.value.trim()) texto += '\n\n' + msg.value.trim();
       status.textContent = 'Abrindo o WhatsApp.';
+      if (aceite) { // registro do aceite (só neste navegador)
+        try { localStorage.setItem('ipe-aceite', JSON.stringify({ privacidade: 1, termos: 1, data: new Date().toISOString() })); } catch (err) {}
+      }
       window.open(waLink(texto), '_blank', 'noopener');
+      setTimeout(function () { location.href = (aceite ? base : '') + 'obrigado.html'; }, 350);
     });
   }
 

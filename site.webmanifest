@@ -1,0 +1,14 @@
+{
+  "name": "Ipê Roxo Marcenaria",
+  "short_name": "Ipê Roxo",
+  "description": "Móveis sob medida em Chapecó, SC.",
+  "lang": "pt-BR",
+  "start_url": "/index.html",
+  "display": "browser",
+  "background_color": "#F6F0E6",
+  "theme_color": "#F6F0E6",
+  "icons": [
+    { "src": "/assets/logo/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/assets/logo/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

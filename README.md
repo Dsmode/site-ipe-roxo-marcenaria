@@ -13,7 +13,8 @@ Site de apresentação para uma marcenaria de móveis planejados sob medida em C
 | **Galeria** | 14 fotos com filtro por categoria (o filtro vai para o endereço) e ampliação com teclado |
 | **Sobre** | Quem somos, como cada peça é feita, história e onde estamos |
 | **Contato** | Formulário que monta a mensagem e abre o WhatsApp, dados de contato e mapa |
-| **404** e **Créditos** | Página de erro e créditos das fotografias |
+| **Privacidade** e **Termos** | Política de Privacidade com política de cookies, e termos de uso (texto de exemplo) |
+| **Obrigado**, **404** e **Créditos** | Página pós-envio do formulário, página de erro e créditos das fotografias |
 
 ## Celular e tablet
 
@@ -66,19 +67,21 @@ Na rede local tudo carrega rápido e o esqueleto não chega a aparecer. Para vê
 
 - Botão flutuante do WhatsApp (só o ícone no topo da página, com texto depois de rolar)
 - Menu que marca a seção visível ao rolar a página inicial
-- Formulário com validação, erros ao lado de cada campo e mensagem pronta para o WhatsApp
+- Formulário com validação, erros ao lado de cada campo, aceite da política de privacidade e mensagem pronta para o WhatsApp
+- Aviso de cookies com Recusar e Aceitar, sem nenhum rastreador ou analytics; o mapa do Google só abre com a permissão do visitante
 - Galeria com filtro, ampliação, navegação por setas do teclado e `Esc` para fechar
-- Mapa do Google incorporado pelo endereço
+- Mapa do Google incorporado pelo endereço, carregado só depois do aceite
 - Layout responsivo (celular, tablet e desktop) e respeito a `prefers-reduced-motion`
 - Retorno ao toque e esqueleto de carregamento no celular e no tablet
-- Imagens em três tamanhos (`srcset`), `loading="lazy"` e pré-visualização para compartilhamento
-- Página 404, `sitemap.xml`, `robots.txt` e dados estruturados de empresa local
+- Imagens em três tamanhos (`srcset`), `loading="lazy"` e pré-visualização para compartilhamento (Open Graph)
+- Conjunto completo de favicons e `site.webmanifest`
+- Página 404, `sitemap.xml`, `robots.txt`, `canonical` e dados estruturados de empresa local
 
 ## Tecnologias
 
 HTML, CSS e JavaScript puros, sem build e sem dependências em tempo de execução.
 
-- Fontes: [Fraunces](https://fonts.google.com/specimen/Fraunces) e [DM Sans](https://fonts.google.com/specimen/DM+Sans) (Google Fonts)
+- Fontes: [Fraunces](https://fonts.google.com/specimen/Fraunces) e [DM Sans](https://fonts.google.com/specimen/DM+Sans) (licença SIL OFL), servidas pelo próprio site em `assets/fonts/`
 - Ícones: [Lucide](https://lucide.dev) (ISC), e WhatsApp e Google do [Simple Icons](https://simpleicons.org) (CC0)
 - Fotografias: [Unsplash](https://unsplash.com) (licença Unsplash). Autores em [`assets/img/CREDITOS.md`](assets/img/CREDITOS.md)
 
@@ -111,14 +114,16 @@ O terminal mostra o endereço para digitar no celular. Qualquer servidor estáti
 
 ```
 index.html  servicos.html  galeria.html  sobre.html  contato.html
-404.html    creditos.html  sitemap.xml   robots.txt  share.jpg  _headers
+privacidade.html  termos.html  obrigado.html  creditos.html  404.html
+sitemap.xml  robots.txt  share.jpg  favicon.ico  site.webmanifest  _headers
 assets/
   css/style.css     estilos de todas as páginas
-  js/main.js        menu, toque, esqueleto, galeria, formulário, botão flutuante
+  js/main.js        menu, toque, esqueleto, galeria, formulário, cookies, botão flutuante
+  fonts/            fontes em woff2
   js/icons.js       ícones embutidos
   img/              fotos em 3 tamanhos (800, 1200 e 1600 px)
   logo/             logo em PNG com fundo transparente
-scripts/            servidor local, verificações e geração dos prints
+scripts/            servidor local, verificações, geração dos prints e dos favicons
 docs/               prints usados neste README
 ```
 
@@ -132,6 +137,14 @@ node scripts/teste_site.js            # testes no navegador (Playwright): 4 larg
 
 O teste no navegador precisa do servidor local rodando na porta 8080.
 
+## Publicar com endereço próprio
+
+`canonical`, `og:url`, `og:image`, `sitemap.xml` e `robots.txt` usam o endereço de exemplo `https://SEU-SITE.netlify.app`. Para trocar em todas as páginas de uma vez:
+
+```bash
+python scripts/definir_dominio.py https://seu-endereco
+```
+
 ## Aviso
 
-Projeto de demonstração. A empresa, o telefone, o e-mail e o endereço não existem. Os valores dos serviços são exemplos.
+Projeto de demonstração. A empresa, o CNPJ, o telefone, o e-mail, o endereço e as avaliações não existem; as páginas de privacidade e termos são texto de exemplo, não orientação jurídica. Os valores dos serviços são exemplos.
