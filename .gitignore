@@ -1,0 +1,17 @@
+.DS_Store
+Thumbs.db
+node_modules/
+_publicar/
+scripts/_shots/
+scripts/_prints/
+
+# Notas internas de trabalho (não publicar)
+ESTADO_ATUAL.md
+docs/BRIEFING.md
+docs/DESIGN.md
+
+# Referências visuais de terceiros
+assets/refs/
+
+# Arquivo de origem da logo (o site usa os PNGs)
+assets/logo/Logo.jpg

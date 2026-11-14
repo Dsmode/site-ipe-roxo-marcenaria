@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Contato e orçamento | Ipê Roxo Marcenaria, Chapecó</title>
+  <meta name="description" content="Peça seu orçamento pelo WhatsApp, veja o endereço na Efapi, em Chapecó, o horário de atendimento e o mapa da Ipê Roxo Marcenaria.">
+  <meta name="theme-color" content="#F6F0E6">
+  <meta property="og:title" content="Contato e orçamento | Ipê Roxo Marcenaria, Chapecó">
+  <meta property="og:description" content="Conte o que você precisa e peça o orçamento pelo WhatsApp.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:image" content="share.jpg"><!-- trocar por endereço absoluto (https://seu-site/share.jpg) depois de publicar -->
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/png" href="assets/logo/favicon.png">
+  <link rel="apple-touch-icon" href="assets/logo/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="contato">
+  <a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
+
+  <header class="nav">
+    <div class="wrap">
+      <a class="brand" href="index.html" aria-label="Ipê Roxo Marcenaria, página inicial">
+        <img src="assets/logo/logo-marca.png" alt="" width="52" height="48">
+        <span class="brand__txt" translate="no"><strong>Ipê Roxo</strong><span>Marcenaria</span></span>
+      </a>
+      <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="menu" aria-label="Abrir menu"><i data-icon="menu"></i></button>
+      <nav class="nav__links" id="menu" aria-label="Principal">
+        <a href="index.html">Início</a>
+        <a href="servicos.html">Serviços</a>
+        <a href="index.html#avaliacoes">Avaliações</a>
+        <a href="galeria.html">Galeria</a>
+        <a href="sobre.html">Sobre</a>
+        <a href="contato.html" aria-current="page">Contato</a>
+        <a class="btn btn--primary" href="contato.html" data-wa="Olá! Gostaria de pedir um orçamento.">Pedir orçamento</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="conteudo">
+
+    <section class="pagehead" aria-labelledby="h-pagina">
+      <div class="wrap">
+        <h1 id="h-pagina" class="enter">Fale com a Ipê Roxo</h1>
+        <p class="lead enter enter--2">Peça o orçamento pelo WhatsApp, venha à marcenaria na Efapi ou chame no Instagram.</p>
+      </div>
+    </section>
+
+    <section class="section contact" id="contato" aria-labelledby="h-contato">
+      <div class="wrap contact__grid">
+        <div class="contact__form">
+          <h2 id="h-contato">Peça seu orçamento pelo WhatsApp</h2>
+          <p style="margin-top:16px;color:var(--ink-soft);font-size:1.125rem">Conte o que você precisa. A mensagem abre no WhatsApp, pronta para enviar.</p>
+          <form class="form" id="form-orcamento" novalidate>
+            <div class="field">
+              <label for="nome">Seu nome</label>
+              <input id="nome" name="nome" type="text" autocomplete="name" aria-describedby="nome-erro">
+              <p class="field__erro" id="nome-erro" role="alert"></p>
+            </div>
+            <div class="field">
+              <label for="tipo">Tipo de móvel</label>
+              <select id="tipo" name="tipo" aria-describedby="tipo-erro">
+                <option value="">Escolha uma opção</option>
+                <option>Cozinha planejada</option>
+                <option>Guarda-roupa sob medida</option>
+                <option>Painel de TV com rack</option>
+                <option>Home office / escritório</option>
+                <option>Móveis para comércio</option>
+                <option>Reforma e restauro</option>
+                <option>Outro</option>
+              </select>
+              <p class="field__erro" id="tipo-erro" role="alert"></p>
+            </div>
+            <div class="field">
+              <label for="mensagem">Detalhes (opcional)</label>
+              <textarea id="mensagem" name="mensagem" rows="4"></textarea>
+            </div>
+            <div><button class="btn btn--primary" type="submit"><i data-icon="whatsapp"></i>Enviar pelo WhatsApp</button></div>
+            <p class="form__hint" id="form-status" role="status">Atendimento de segunda a sexta, 8h às 18h, e sábado, 8h às 12h.</p>
+          </form>
+        </div>
+        <div class="contact__side">
+          <ul class="infos">
+            <li><i data-icon="map-pin"></i><div><strong>Endereço</strong>Rua das Paineiras, 482, Efapi<br>Chapecó, SC</div></li>
+            <li><i data-icon="whatsapp"></i><div><strong>WhatsApp</strong><a href="#contato" data-wa="Olá! Gostaria de pedir um orçamento.">(49) 90000-0000</a></div></li>
+            <li><i data-icon="mail"></i><div><strong>E-mail</strong><a href="mailto:contato@iperoxo.com.br">contato@iperoxo.com.br</a></div></li>
+            <li><i data-icon="instagram"></i><div><strong>Instagram</strong><a href="https://www.instagram.com/iperoxo.marcenaria" target="_blank" rel="noopener">@iperoxo.marcenaria</a></div></li>
+            <li><i data-icon="clock"></i><div><strong>Horário</strong>Segunda a sexta, 8h às 18h<br>Sábado, 8h às 12h</div></li>
+          </ul>
+          <div class="map">
+            <iframe title="Mapa com a localização da Ipê Roxo Marcenaria, na Efapi, em Chapecó" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=Rua+das+Paineiras,+482,+Efapi,+Chapec%C3%B3,+SC&amp;output=embed"></iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer__grid">
+        <div class="footer__brand">
+          <img src="assets/logo/logo-ipe-roxo-claro.png" alt="Ipê Roxo Marcenaria" width="90" height="120">
+          <p>Móvel feito do seu jeito, para durar a vida toda.</p>
+        </div>
+        <div>
+          <h3>Navegação</h3>
+          <ul>
+            <li><a href="index.html">Início</a></li>
+            <li><a href="servicos.html">Serviços</a></li>
+            <li><a href="galeria.html">Galeria</a></li>
+            <li><a href="sobre.html">Sobre</a></li>
+            <li><a href="contato.html">Contato</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Serviços</h3>
+          <ul>
+            <li>Cozinha planejada</li>
+            <li>Guarda-roupa sob medida</li>
+            <li>Painel de TV com rack</li>
+            <li>Home office</li>
+            <li>Móveis para comércio</li>
+            <li>Reforma e restauro</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Contato</h3>
+          <ul>
+            <li>Rua das Paineiras, 482, Efapi<br>Chapecó, SC</li>
+            <li><a href="#contato" data-wa="Olá! Gostaria de pedir um orçamento.">(49) 90000-0000</a></li>
+            <li><a href="mailto:contato@iperoxo.com.br">contato@iperoxo.com.br</a></li>
+            <li><a href="https://www.instagram.com/iperoxo.marcenaria" target="_blank" rel="noopener">@iperoxo.marcenaria</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__legal">
+        <span>© <span data-ano>2026</span> Ipê Roxo Marcenaria. Projeto fictício de portfólio.</span>
+        <span>Fotografias via <a href="creditos.html">Unsplash</a></span>
+      </div>
+    </div>
+  </footer>
+  <a class="wa-float is-compact" href="contato.html" data-wa="Olá! Gostaria de pedir um orçamento." aria-label="Falar pelo WhatsApp"><i data-icon="whatsapp"></i><span>WhatsApp</span></a>
+
+  <script src="assets/js/icons.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

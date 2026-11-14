@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Trocar SEU-SITE.netlify.app pelo endereço real depois de publicar. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://SEU-SITE.netlify.app/</loc></url>
+  <url><loc>https://SEU-SITE.netlify.app/servicos.html</loc></url>
+  <url><loc>https://SEU-SITE.netlify.app/galeria.html</loc></url>
+  <url><loc>https://SEU-SITE.netlify.app/sobre.html</loc></url>
+  <url><loc>https://SEU-SITE.netlify.app/contato.html</loc></url>
+</urlset>
